@@ -1,0 +1,12 @@
+MVC
+Model es el encargado de todo lo relacionado con los datos, Base de datos y el CRUD
+Consulta base de datos pero no lo imprime
+
+View 
+La vista se encarga de imprimir en el html y mostrarlo para el usuario (user)
+
+Controller
+Controlador es el que comunica el modelo y la vista
+
+Router
+Encargado de las url y los Endpoints ''web/proyecto''
