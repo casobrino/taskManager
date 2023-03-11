@@ -17,8 +17,8 @@ const register = async (req, res) => {
         user.token = genetareId();
         const userToSave = await user.save();
 
-        console.log(`${userToSave}, has been saved`);
-        res.send('registrando....')
+        //console.log(`${userToSave}, has been saved`);
+        res.send('Registrado')
     } catch (error) {
         console.log(error);
     }
@@ -39,11 +39,9 @@ const autenticate = async (req, res) => {
         const error = new Error(`The user is not comfirmed, you can confirm in your email inbox`);
         return res.status(403).json({ msg: error.message })
     }
-    console.log(user);
-
+    //console.log(user);
     // confirmar el password
     if (await user.checkPassword(password)) {
-        console.log('Correcto');
         res.json({
             _id: user._id,
             name: user.name,
@@ -101,7 +99,6 @@ const checkToken = async (req, res) => {
     const { token } = req.params;
     const validToken = await User.findOne({ token });
     if (validToken) {
-        console.log('token valido');
         res.json({
             msg: 'Token valido y el usuario existe'
         })
@@ -117,7 +114,7 @@ const newPassword = async (req, res) => {
 
     const user = await User.findOne({ token });
     if (user) {
-        console.log(user);
+        //console.log(user);
         user.password = password;
         user.token = '';
         try {

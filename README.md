@@ -10,6 +10,7 @@ docker-compose up -d
 ```
 o conectala a la base de datos de tu preferencia
 4. Renombra el archivo llamado .env.template a .env y la configutacion de la base estara lista
+
 5. Instala la paqueteria de Node necesaria
 ```
 npm i 
