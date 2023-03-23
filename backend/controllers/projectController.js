@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Project from '../models/Project.js'
+import Task from '../models/Tasks.js';
 
 const getProjects = async (req, res) => {
     const projects = await Project.find().where('host').equals(req.user);
@@ -35,7 +36,14 @@ const getProject = async (req, res) => {
         const error = new Error("Permision deny");
         return res.status(401).json({ msg: error.message });
     }
-    res.json(project)
+
+    //get Tasks
+    const tasks = await Task.find().where('project').equals(id)
+    res.json({
+        project,
+        tasks
+    });
+    //res.json(project)
 
 }
 
@@ -95,8 +103,7 @@ const addColaborator = async (req, res) => {
 }
 const deleteColaborator = async (req, res) => {
 }
-const getTasks = async (req, res) => {
-}
+
 
 export {
     getProjects,
@@ -106,5 +113,4 @@ export {
     deleteColaborator,
     deleteProject,
     addColaborator,
-    getTasks
 }

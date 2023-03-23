@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const porjectSchema = mongoose.Schema({
+const taskSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -11,30 +11,29 @@ const porjectSchema = mongoose.Schema({
         trim: true,
         required: true,
     },
+    state: {
+        type: Boolean,
+        default: false,
+    },
     deadline: {
         type: Date,
+        required: true,
         default: Date.now(),
     },
-    client: {
+    priority: {
         type: String,
-        trim: true,
         required: true,
+        enum: ['low', 'medium', 'high']
     },
-    host: {
+    project: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-    colaborators: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        },
-    ],
+        ref: 'Project',
+    }
 },
     {
         timestamps: true
     }
 );
 
-const Project = mongoose.model('Project', porjectSchema);
-export default Project; 
+const Task = mongoose.model('Task', taskSchema)
+export default Task;
