@@ -38,7 +38,7 @@ const Login = () => {
         <input
           type="submit"
           value="Iniciar Sesion"
-          className="bg-sky-700 mb-5 w-full py-3 text-white font-bold uppercas rounded hover:cursor-pointer hover:bg-sky-800 transition-colors"
+          className="bg-sky-700 my-5 w-full py-3 text-white font-bold uppercas rounded hover:cursor-pointer hover:bg-sky-800 transition-colors"
         />
       </form>
       <nav className="lg:flex lg:justify-between">

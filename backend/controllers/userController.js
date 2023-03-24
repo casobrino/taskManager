@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import genetareId from "../helpers/generateId.js";
 import generateJWT from "../helpers/generateJWT.js";
+import { emailRegister, emailPassword } from '../helpers/email.js'
 
 const register = async (req, res) => {
     try {
@@ -15,10 +16,19 @@ const register = async (req, res) => {
         //si no existe el mismo correo duplicado
         const user = new User(req.body) //crea en la base de datos el nuevo usuario
         user.token = genetareId();
-        const userToSave = await user.save();
+        await user.save();
+
+        //enviar email de confirmacion
+        emailRegister({
+            email: user.email,
+            name: user.name,
+            token: user.token
+        })
 
         //console.log(`${userToSave}, has been saved`);
-        res.send('Registrado')
+        res.json({
+            msg: "Usuario creado, revisa tu email para verificar"
+        })
     } catch (error) {
         console.log(error);
     }
@@ -62,7 +72,6 @@ const confirm = async (req, res) => {
         return res.status(403).json({ msg: error.message });
     }
     try {
-        //userConfirm.confirm = true;
         userConfirm.confirm = true;
         userConfirm.token = '';
         await userConfirm.save();
@@ -75,7 +84,7 @@ const confirm = async (req, res) => {
     }
 }
 const resetPassword = async (req, res) => {
-    const { email, password } = req.body;
+    const { email } = req.body;
     //comprobar si el usuario existe
     const user = await User.findOne({ email });
     if (!user) {
@@ -89,7 +98,14 @@ const resetPassword = async (req, res) => {
         res.json({
             msg: "confirm your email"
         })
-        //TODO: enviar token por email
+
+        //TODO: Mover a variables de entorno
+        emailPassword({
+            email: user.email,
+            name: user.name,
+            token: user.token
+        })
+
     } catch (error) {
         console.log(error.message);
 
@@ -131,8 +147,8 @@ const newPassword = async (req, res) => {
     }
 }
 
-const perfil =async (req, res) =>{
-    const {user} = req
+const perfil = async (req, res) => {
+    const { user } = req
     res.json(user)
 
 }

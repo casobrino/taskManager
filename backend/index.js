@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors';
 import dotenv from "dotenv";
 import conectionDb from "./config/db.js";
 import userRouts from "./routes/userRoutes.js";
@@ -9,6 +10,22 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 conectionDb();
+
+//config cors
+const whiteList = [process.env.FRONTEND_URL]
+const corsOptions = {
+    origin: function (origin, callback) {
+        //console.log(origin, 'new conection');
+        if (whiteList.includes(origin)) {
+            //can use the api
+            callback(null, true)
+        } else {
+            //cant use api
+            callback(new Error("Error de Cors"))
+        }
+    }
+}
+app.use(cors(corsOptions))
 const PORT = process.env.PORT || 4000;
 
 //routing
