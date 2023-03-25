@@ -99,7 +99,6 @@ const resetPassword = async (req, res) => {
             msg: "confirm your email"
         })
 
-        //TODO: Mover a variables de entorno
         emailPassword({
             email: user.email,
             name: user.name,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import clienteAxios from "../config/clienteAxois";
 import { Link } from "react-router-dom";
 import Alerta from "../components/Alerta";
 
@@ -19,9 +19,8 @@ const OlvidePassword = () => {
 
     try {
 
-      // Todo: Mover hacia un cliente Axios
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKED_URL}/api/users/reset-password/`,
+
+      const { data } = await clienteAxios.post('/users/reset-password/',
         {
           email
         }
