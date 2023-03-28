@@ -1,12 +1,54 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import clienteAxios from "../config/clienteAxois";
+import Alerta from "../components/Alerta";
+import useAuth from "../hooks/Auth";
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [alerta, setAlerta] = useState({});
+
+  const { setAuth} = useAuth({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if ([email, password].includes("")) {
+      setAlerta({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
+    }
+    try {
+      const { data } = await clienteAxios.post("users/login", {
+        email,
+        password,
+      });
+      setAlerta({});
+      localStorage.setItem("token", data.token);
+      setAuth(data);
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
+  };
+  const { msg } = alerta;
+
   return (
     <>
       <h1 className="text-sky-600 font-black text-5xl capitalize">
         Inicia sesion y administra tus{" "}
         <span className="text-slate-700">Proyectos</span>
       </h1>
-      <form className="my-10 bg-white shadow rounded-lg px-10 py-10" action="">
+      {msg && <Alerta alerta={alerta} />}
+      <form
+        onSubmit={handleSubmit}
+        className="my-10 bg-white shadow rounded-lg px-10 py-10"
+        action=""
+      >
         <div className="">
           <label
             className="uppercase text-gray-600 block text-xl font-bold"
@@ -19,6 +61,8 @@ const Login = () => {
             type="email"
             placeholder="Email de registro "
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="">
@@ -33,6 +77,8 @@ const Login = () => {
             type="password"
             placeholder="Password de registro "
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <input
