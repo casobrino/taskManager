@@ -10,12 +10,11 @@ const getProjects = async (req, res) => {
 const newProject = async (req, res) => {
     const project = new Project(req.body);
     project.host = req.user._id;
-    console.log(project);
     try {
         const projectSaved = await project.save();
-        res.json({
+        res.json(
             projectSaved
-        })
+        )
     } catch (error) {
         console.log(error.message);
     }
@@ -37,12 +36,10 @@ const getProject = async (req, res) => {
         return res.status(401).json({ msg: error.message });
     }
 
-    //get Tasks
-    const tasks = await Task.find().where('project').equals(id)
-    res.json({
+
+    res.json(
         project,
-        tasks
-    });
+    );
     //res.json(project)
 
 }
@@ -94,7 +91,7 @@ const deleteProject = async (req, res) => {
     }
     try {
         await Project.findByIdAndDelete(id);
-        return res.json({msg: 'Eliminado correctamente'})
+        return res.json({ msg: 'Eliminado correctamente' })
     } catch (error) {
         console.log(error.message);
     }
