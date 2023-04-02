@@ -10,6 +10,7 @@ const ProyectosProvider = ({ children }) => {
   const [alerta, setAlerta] = useState({});
   const [proyecto, setProyecto] = useState({});
   const [cargando, setCargando] = useState(false);
+  const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
 
   const navigate = useNavigate();
 
@@ -180,6 +181,29 @@ const ProyectosProvider = ({ children }) => {
       setCargando(false);
     }
   };
+
+  const handleModalTarea = () => {
+    setModalFormularioTarea(!modalFormularioTarea);
+  };
+
+  const submitTarea = async (tarea) => {
+    const token = comprobarToken();
+    if (!token) return;
+    const config = configurationBearer(token);
+    try {
+      const { data } = await clienteAxios.post("/tasks", tarea, config);
+      //console.log(data);
+      //agrega la taea al state
+      const proyectoActualizado = { ...proyecto };
+      proyectoActualizado.tasks = [...proyecto.tasks, data];
+      setProyecto(proyectoActualizado);
+      setAlerta({});
+      setModalFormularioTarea(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -187,10 +211,13 @@ const ProyectosProvider = ({ children }) => {
         alerta,
         proyecto,
         cargando,
+        modalFormularioTarea,
         mostrarAlerta,
         submitProyecto,
         obtenerProyecto,
         eliminarProyecto,
+        handleModalTarea,
+        submitTarea,
       }}
     >
       {children}

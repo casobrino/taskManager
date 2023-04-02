@@ -3,7 +3,7 @@ import Project from '../models/Project.js'
 import Task from '../models/Tasks.js';
 
 const getProjects = async (req, res) => {
-    const projects = await Project.find().where('host').equals(req.user);
+    const projects = await Project.find().where('host').equals(req.user).select('-taks');
     res.json(projects)
 }
 
@@ -26,7 +26,7 @@ const getProject = async (req, res) => {
     if (!valid) {
         return res.status(404).json({ msg: 'Project not found' });
     }
-    const project = await Project.findById(id);
+    const project = await Project.findById(id).populate('tasks');
     if (!project) {
         const error = new Error('Project dont exist');
         return res.status(404).json({ msg: error.message });

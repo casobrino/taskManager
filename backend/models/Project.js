@@ -24,6 +24,10 @@ const porjectSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    tasks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Task'
+    }],
     colaborators: [
         {
             type: mongoose.Schema.Types.ObjectId,
