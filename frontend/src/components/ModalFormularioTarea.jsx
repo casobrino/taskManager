@@ -1,11 +1,13 @@
 import { Fragment, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
+
 import useProyectos from "../hooks/useProyectos";
 import Alerta from "../components/Alerta";
-import { useParams } from "react-router-dom";
 
 const ModalFormularioTarea = () => {
   const params = useParams();
+  const [id, setId] = useState("");
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [prioridad, setPrioridad] = useState("");
@@ -16,6 +18,7 @@ const ModalFormularioTarea = () => {
     mostrarAlerta,
     alerta,
     submitTarea,
+    tarea,
   } = useProyectos();
 
   const PRIORIDAD = [
@@ -33,6 +36,22 @@ const ModalFormularioTarea = () => {
     },
   ];
 
+  useEffect(() => {
+    if (tarea?._id) {
+      setId(tarea._id);
+      setNombre(tarea.nombre);
+      setDescripcion(tarea.descripcion);
+      setDeadline(tarea.deadline?.split("T")[0]);
+      setPrioridad(tarea.prioridad);
+      return;
+    }
+    setId("");
+    setNombre("");
+    setDescripcion("");
+    setDeadline("");
+    setPrioridad("");
+  }, [tarea]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if ([nombre, descripcion, prioridad, deadline].includes("")) {
@@ -45,17 +64,19 @@ const ModalFormularioTarea = () => {
 
     //formatear tarea
     await submitTarea({
+      _id:id,
       name: nombre,
       description: descripcion,
       priority: prioridad,
       deadline,
-      project: params.id
+      project: params.id,
     });
 
-    setNombre('')
-    setDeadline('')
-    setDescripcion('')
-    setPrioridad('')
+    setId('')
+    setNombre("");
+    setDeadline("");
+    setDescripcion("");
+    setPrioridad("");
   };
 
   const { msg } = alerta;
@@ -200,7 +221,7 @@ const ModalFormularioTarea = () => {
                     <input
                       type="submit"
                       className="bg-sky-600 hover:bg-sky-700 font-bold uppercase cursor-pointer transition-colors rounded text-sm w-full text-white p-3 text-center"
-                      value="Crear tarea"
+                      value={id ? "Editar Tarea" : "Crear Tarea"}
                     />
                   </form>
                 </div>

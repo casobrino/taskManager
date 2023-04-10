@@ -15,6 +15,7 @@ import Proyectos from "./pages/Proyectos";
 import Proyecto from "./pages/Proyecto";
 import CrearProyecto from "./pages/CrearProyecto";
 import EditarProyecto from "./pages/EditarProyecto";
+import NuevoColaborador from "./pages/NuevoColaborador";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               <Route path={"crear-proyecto"} element={<CrearProyecto />} />
               <Route path={":id"} element={<Proyecto />} />
               <Route path={"editar/:id"} element={<EditarProyecto />} />
+              <Route path={"nuevo-colaborador/:id"} element={<NuevoColaborador />} />
             </Route>
           </Routes>
         </ProyectosProvider>

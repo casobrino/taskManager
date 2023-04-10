@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProyectos from "../hooks/useProyectos";
 import ModalFormularioTarea from "../components/ModalFormularioTarea";
+import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import Tarea from "../components/Tarea";
+import Alerta from "../components/Alerta";
 const Proyecto = () => {
   const params = useParams();
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea } =
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } =
     useProyectos();
   const { name } = proyecto;
-  const [modal, setModal] = useState(false);
   useEffect(() => {
     obtenerProyecto(params.id);
   }, []);
   if (cargando) return "Cargando..";
+
+  const { msg } = alerta;
 
   return (
     <>
@@ -64,16 +67,36 @@ const Proyecto = () => {
         Nueva tarea
       </button>
       <p className="font-bold text-xl mt-10">Tareas del proyecto</p>
+      <p className="font-bold text-xl mt-10">Tareas del proyecto</p>
+      <div className="flex justify-center">
+        <div className="w-full md:w-2/3 lg:w-3/4">
+          {msg && <Alerta alerta={alerta} />}
+        </div>
+      </div>
       <div className="bg-white shadow mt-10 rounded-lg">
         {proyecto.tasks?.length ? (
-          proyecto.tasks?.map((tarea) => <Tarea key={tarea._id} tarea={tarea} />)
+          proyecto.tasks?.map((tarea) => (
+            <Tarea key={tarea._id} tarea={tarea} />
+          ))
         ) : (
           <p className="text-center my-5 p-10">
             No hay tareas en este proyecto
           </p>
         )}
       </div>
-      <ModalFormularioTarea modal={modal} setModal={setModal} />
+      <div className="flex items-center justify-between mt-10">
+        <p className="font-bold text-xl mt-10">Colaboradores</p>
+        <div className="font-bold text-xl mt-10">
+          <Link
+            to={`/proyectos/nuevo-colaborador/${proyecto._id}`}
+            className="text-gray-400 uppercase font-bold hover:text-black"
+          >
+            Aniadir
+          </Link>
+        </div>
+      </div>
+      <ModalFormularioTarea />
+      <ModalEliminarTarea />
     </>
   );
 };
