@@ -6,6 +6,7 @@ import clienteAxios from "../config/clienteAxois";
 const ProyectosContext = createContext();
 const ProyectosProvider = ({ children }) => {
   //lo que estara disponible para las demas rutas
+  const [buscador, setBuscador] = useState(false);
   const [proyectos, setProyectos] = useState([]);
   const [alerta, setAlerta] = useState({});
   const [proyecto, setProyecto] = useState({});
@@ -173,13 +174,13 @@ const ProyectosProvider = ({ children }) => {
       setProyecto(data);
       setAlerta({});
     } catch (error) {
-      navigate('/proyectos')
+      navigate("/proyectos");
       setAlerta({
         msg: error.response.data.msg,
         error: true,
       });
       setTimeout(() => {
-        setAlerta({})
+        setAlerta({});
       }, 2000);
     } finally {
       setCargando(false);
@@ -374,10 +375,14 @@ const ProyectosProvider = ({ children }) => {
       //console.log(proyectoActualizado , '________________');
       setProyecto(proyectoActualizado);
       setTarea({});
-      setAlerta({})
+      setAlerta({});
     } catch (error) {
       console.log(error.response);
     }
+  };
+
+  const handleBuscador = () => {
+    setBuscador(!buscador);
   };
 
   return (
@@ -407,6 +412,9 @@ const ProyectosProvider = ({ children }) => {
         handleModalEliminarColaborador,
         eliminarColaborador,
         handleEstadoTarea,
+        handleBuscador,
+        buscador,
+        setBuscador,
       }}
     >
       {children}

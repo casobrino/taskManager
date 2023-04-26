@@ -26,11 +26,11 @@ const NuevoColaborador = () => {
         ? <p className="text-center">Cargando...</p>
         : colaborador?._id && (
             <div className="flex justify-center mt-10">
-              <div className="bg-white py-10 px-5 md:w-3/4 rounded-lg shadow">
+              <div className="bg-white py-10 px-5 md:w-3/4 rounded-lg w-full shadow">
                 <h2 className="text-center mb-10 font-bold text-2xl">
                   Resultado
                 </h2>
-                <div className="flex justify-between items-center">
+                <div className="flex max-w-xl m-auto justify-between items-center">
                   <p>{colaborador.name}</p>
                   <button
                     type="button"

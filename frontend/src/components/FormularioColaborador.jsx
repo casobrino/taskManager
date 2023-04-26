@@ -19,11 +19,11 @@ const FormularioColaborador = () => {
   const { msg } = alerta;
   return (
     <form
-      className="bg-white py-10 px-5 md:w-3/4 rounded-lg shadow"
+      className="bg-white py-10 px-5 w-full md:w-3/4 rounded-lg shadow"
       onSubmit={handleSubmit}
     >
       {msg && <Alerta alerta={alerta} />}
-      <div className="mb-5">
+      <div className="mb-5 max-w-xl mx-auto">
         <label
           htmlFor="email"
           className="text-gray-700 uppercase font-bold text-sm hover:cursor-pointer"
@@ -40,7 +40,7 @@ const FormularioColaborador = () => {
         />
       </div>
       <input
-        className="p-3 transition-colors bg-sky-600 w-full uppercase font-bold text-white rounded cursor-pointer hover:cursor-pointer hover:bg-sky-700"
+        className="max-w-xl p-3 transition-colors bg-sky-600 w-full uppercase font-bold text-white rounded cursor-pointer hover:cursor-pointer hover:bg-sky-700 flex mx-auto"
         value={"Buscar Colaborador"}
         type="submit"
       />

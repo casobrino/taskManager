@@ -5,9 +5,9 @@ const PreviewProyecto = ({ proyecto }) => {
 
   const { name, _id, client, host } = proyecto;
   return (
-    <div className="border-b p-5 flex justify-between">
+    <div className="border-b p-5 justify-between flex flex-col  min-[500px]:flex-row">
       <div className=" flex items-center gap-2 ">
-      <p className="flex-1">
+      <p className="flex-1 pb-1">
         {name}
         <span className="text-sm text-gray-500 uppercase"> {client}</span>
       </p>

@@ -96,9 +96,12 @@ const changeStateTask = async (req, res) => {
             const error = new Error("Permision deny");
             return res.status(401).json({ msg: error.message });
         }
-        task.state = !task.state
-        await task.save()
-        res.json(task)
+        task.state = !task.state;
+        task.completed = req.user._id;
+        await task.save();
+
+        const taskToSave = await Task.findById(id).populate('project').populate('completed', "name")
+        res.json(taskToSave)
     } catch (error) {
         error = new Error('Task donst exist');
         return res.status(404).json({ msg: error.message });

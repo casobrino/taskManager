@@ -5,7 +5,6 @@ import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import useAdmin from "../hooks/useAdmin";
 import Tarea from "../components/Tarea";
-import Alerta from "../components/Alerta";
 import Colaborador from "../components/Colaborador";
 import ModalEliminarColaborador from "../components/ModalEliminarColaborador";
 const Proyecto = () => {
@@ -18,10 +17,7 @@ const Proyecto = () => {
     obtenerProyecto(params.id);
   }, []);
   if (cargando) return "Cargando..";
-
-  const { msg } = alerta;
-
-  return  (
+  return (
     <>
       <div className="flex justify-between">
         <h1 className="font-black text-4xl">{name}</h1>

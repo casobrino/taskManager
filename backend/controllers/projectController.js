@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import Project from '../models/Project.js'
 import User from '../models/User.js'
-import Task from '../models/Tasks.js';
 
 const getProjects = async (req, res) => {
     const projects = await Project.find({
@@ -20,7 +19,6 @@ const getProjects = async (req, res) => {
     }).select('-taks');
     res.json(projects)
 }
-
 const newProject = async (req, res) => {
     const project = new Project(req.body);
     project.host = req.user._id;
@@ -39,7 +37,7 @@ const getProject = async (req, res) => {
     if (!valid) {
         return res.status(404).json({ msg: 'Project not found' });
     }
-    const project = await Project.findById(id).populate('tasks').populate('colaborators', "name email");
+    const project = await Project.findById(id).populate({ path: 'tasks', populate: { path: 'completed', select: 'name'} }).populate('colaborators', "name email");
     if (!project) {
         const error = new Error('Project dont exist');
         return res.status(404).json({ msg: error.message });
