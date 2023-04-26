@@ -47,12 +47,10 @@ const deleteTask = async (req, res) => {
             const error = new Error('Permision deny for this task');
             return res.status(403).json({ msg: error.message });
         }
-        try {
-            await Task.findByIdAndDelete(id);
-            return res.json({ msg: 'Tarea eliminada correctamente' })
-        } catch (error) {
-            console.log(error);
-        }
+        const project = await Project.findById(task.project)
+        project.tasks.pull(task._id);
+        await Promise.allSettled([await project.save(), await Task.findByIdAndDelete(id)])
+        return res.json({ msg: 'Tarea eliminada correctamente' })
     } catch (error) {
         error = new Error('Task donst exist');
         return res.status(404).json({ msg: error.message });
@@ -85,7 +83,26 @@ const updateTask = async (req, res) => {
 
 };
 const changeStateTask = async (req, res) => {
-
+    const { id } = req.params
+    //console.log(req.params.id);
+    try {
+        const task = await Task.findById(id).populate('project')
+        if (!task) {
+            const error = new Error('Tarea no encontrada');
+            return res.status(403).json({ msg: error.message });
+        }
+        if (task.project.host.toString() !== req.user._id.toString() && !task.project.colaborators.some(colaborador => colaborador._id.toString() === req.user._id.toString())
+        ) {
+            const error = new Error("Permision deny");
+            return res.status(401).json({ msg: error.message });
+        }
+        task.state = !task.state
+        await task.save()
+        res.json(task)
+    } catch (error) {
+        error = new Error('Task donst exist');
+        return res.status(404).json({ msg: error.message });
+    }
 };
 
 export {

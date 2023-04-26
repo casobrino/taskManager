@@ -1,9 +1,15 @@
 import { formatearFecha } from "../helpers/formatearFecha";
 import useProyectos from "../hooks/useProyectos";
+import useAdmin from "../hooks/useAdmin";
 
 const Tarea = ({ tarea }) => {
   const { description, name, deadline, state, _id, priority } = tarea;
-  const { handleModalEditarTarea, handleModalEliminarTarea } = useProyectos();
+  const {
+    handleModalEditarTarea,
+    handleModalEliminarTarea,
+    handleEstadoTarea,
+  } = useProyectos();
+  const admin = useAdmin();
 
   return (
     <div className="border-b p-5 flex justify-between items-center">
@@ -14,35 +20,30 @@ const Tarea = ({ tarea }) => {
         <p className="mb-1 text-xl text-gray-600">Prioridad: {priority}</p>
       </div>
       <div className="flex gap-1">
-        <div>
-          <button
-            onClick={() => handleModalEditarTarea(tarea)}
-            className="bg-indigo-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
-          >
-            Editar
-          </button>
-        </div>
-        {state ? (
-          <div className="">
-            <button className="bg-sky-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
-              Completa
-            </button>
-          </div>
-        ) : (
-          <div className="">
-            <button className="bg-gray-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
-              Inompleta
+        {admin && (
+          <div>
+            <button
+              onClick={() => handleModalEditarTarea(tarea)}
+              className="bg-indigo-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+            >
+              Editar
             </button>
           </div>
         )}
-        <div className="">
+        <button
+          className={`${state ? 'bg-sky-600 ' : 'bg-gray-600'} px-4 py-3 text-white uppercase font-bold text-sm rounded-lg`}
+          onClick={() => handleEstadoTarea(_id)}
+        >
+          {state ? 'Completa' : 'Incompleta'}
+        </button>
+        {admin && (
           <button
             onClick={() => handleModalEliminarTarea(tarea)}
             className="bg-red-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
           >
             Eliminar
           </button>
-        </div>
+        )}
       </div>
     </div>
   );
