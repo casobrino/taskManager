@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import io from "socket.io-client";
 import useProyectos from "../hooks/useProyectos";
 import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
@@ -7,15 +8,50 @@ import useAdmin from "../hooks/useAdmin";
 import Tarea from "../components/Tarea";
 import Colaborador from "../components/Colaborador";
 import ModalEliminarColaborador from "../components/ModalEliminarColaborador";
+let socket;
 const Proyecto = () => {
   const params = useParams();
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } =
-    useProyectos();
-  const { name } = proyecto;
+  const {
+    obtenerProyecto,
+    proyecto,
+    cargando,
+    handleModalTarea,
+    submitTareasPoryecto,
+    eliminarTareaProyecto,
+    actualizarTareaProyecto,
+    cambiarEstadoTarea,
+  } = useProyectos();
   const admin = useAdmin();
   useEffect(() => {
     obtenerProyecto(params.id);
   }, []);
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit("open project", params.id);
+  }, []);
+  useEffect(() => {
+    socket.on("added task", (newTask) => {
+      if (newTask.project === proyecto._id) {
+        submitTareasPoryecto(newTask);
+      }
+    });
+    socket.on("deleted task", (tareaEliminada) => {
+      if (tareaEliminada.project === proyecto._id) {
+        eliminarTareaProyecto(tareaEliminada);
+      }
+    });
+    socket.on("updated task", (tareaActualizada) => {
+      if (tareaActualizada.project._id === proyecto._id) {
+        actualizarTareaProyecto(tareaActualizada);
+      }
+    });
+    socket.on("new state", (updatedTask) => {
+      if (updatedTask.project._id === proyecto._id) {
+        cambiarEstadoTarea(updatedTask);
+      }
+    });
+  });
+  const { name } = proyecto;
   if (cargando) return "Cargando..";
   return (
     <>
