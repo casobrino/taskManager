@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import useProyectos from "../hooks/useProyectos";
+import { useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -9,6 +10,7 @@ function classNames(...classes) {
 const Busqueda = () => {
   const [busqueda, setBusqueda] = useState("");
   const { handleBuscador, buscador, proyectos } = useProyectos();
+  const navigate = useNavigate();
   const proyectosFiltrados =
     busqueda === ""
       ? []
@@ -50,8 +52,11 @@ const Busqueda = () => {
           <Combobox
             as="div"
             className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
-            //onChange={(proyecto) =>(Window.localtion = `/proyectos/${proyecto._id}`)}
-            onChange={(proyecto) => console.log(`/proyectos/${proyecto._id}`)}
+            onChange={(proyecto) => {
+              navigate(`/proyectos/${proyecto._id}`)
+              handleBuscador()
+            }}
+            //onChange={(proyecto) => console.log(`/proyectos/${proyecto._id}`)}
           >
             <div className="relative">
               <div className="flex flex-row">

@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
       try {
         const { data } = await clienteAxios("/users/perfil", config);
         setAuth(data);
-        navigate('/proyectos')
+        if (data._id && location.pathname === "/") navigate("/proyectos");
       } catch (error) {
         setAuth({});
       }
@@ -34,12 +34,17 @@ const AuthProvider = ({ children }) => {
     autenticarUsuario();
   }, []);
 
+  const cerrarSesionAuth = () => {
+    setAuth({});
+  };
+
   return (
     <AuthContext.Provider
       value={{
         auth,
         setAuth,
         cargando,
+        cerrarSesionAuth,
       }}
     >
       {children}
