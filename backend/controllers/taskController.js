@@ -84,7 +84,6 @@ const updateTask = async (req, res) => {
 };
 const changeStateTask = async (req, res) => {
     const { id } = req.params
-    //console.log(req.params.id);
     try {
         const task = await Task.findById(id).populate('project')
         if (!task) {

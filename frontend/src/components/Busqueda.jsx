@@ -56,7 +56,6 @@ const Busqueda = () => {
               navigate(`/proyectos/${proyecto._id}`)
               handleBuscador()
             }}
-            //onChange={(proyecto) => console.log(`/proyectos/${proyecto._id}`)}
           >
             <div className="relative">
               <div className="flex flex-row">

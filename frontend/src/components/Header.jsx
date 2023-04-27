@@ -5,7 +5,6 @@ import useAuth from "../hooks/Auth";
 const Header = () => {
   const { handleBuscador, cerrarSesionProyectos } = useProyectos();
   const { cerrarSesionAuth } = useAuth();
-  //console.log(buscador);
 
   const handleCerrarSeision = () => {
     cerrarSesionAuth();

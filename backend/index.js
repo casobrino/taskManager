@@ -16,7 +16,6 @@ conectionDb();
 const whiteList = [process.env.FRONTEND_URL]
 const corsOptions = {
     origin: function (origin, callback) {
-        //console.log(origin, 'new conection');
         if (whiteList.includes(origin)) {
             //can use the api
             callback(null, true)
@@ -53,7 +52,6 @@ io.on('connection', (socket) => {
     })
     socket.on('new task', task => {
         const project = task.project;
-        //console.log(project);
         socket.to(project).emit('added task', task)
     })
     socket.on('delete task', task => {
@@ -61,7 +59,6 @@ io.on('connection', (socket) => {
         socket.to(project).emit('deleted task', task);
     })
     socket.on('update task', task => {
-        //console.log(task);
         const project = task.project._id;
         socket.to(project).emit('updated task', task);
     })

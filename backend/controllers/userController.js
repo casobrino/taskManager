@@ -24,8 +24,6 @@ const register = async (req, res) => {
             name: user.name,
             token: user.token
         })
-
-        //console.log(`${userToSave}, has been saved`);
         res.json({
             msg: "Usuario creado, revisa tu email para verificar"
         })
@@ -49,7 +47,6 @@ const autenticate = async (req, res) => {
         const error = new Error(`The user is not comfirmed, you can confirm in your email inbox`);
         return res.status(403).json({ msg: error.message })
     }
-    //console.log(user);
     // confirmar el password
     if (await user.checkPassword(password)) {
         res.json({
@@ -129,7 +126,6 @@ const newPassword = async (req, res) => {
 
     const user = await User.findOne({ token });
     if (user) {
-        //console.log(user);
         user.password = password;
         user.token = '';
         try {

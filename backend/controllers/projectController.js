@@ -138,7 +138,6 @@ const addColaborator = async (req, res) => {
     }
 
     //El colaboradior no es el admin del proyecto
-    //console.log(user._id.toString() , '---', user._id.toString());
     if (project.host.toString() === user._id.toString()) {
         const error = new Error("No te puedes agregar a ti mismo como colaborador")
         return res.status(404).json({ msg: error.message })

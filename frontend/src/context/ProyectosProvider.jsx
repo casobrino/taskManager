@@ -116,7 +116,6 @@ const ProyectosProvider = ({ children }) => {
       const proyectosActualizados = proyectos.map((proyectoState) =>
         proyectoState._id === data._id ? data : proyectoState
       );
-      console.log(proyectosActualizados);
       setProyectos(proyectosActualizados);
       setAlerta({
         msg: "Proyecto actualizado con exito",
@@ -274,7 +273,7 @@ const ProyectosProvider = ({ children }) => {
         setAlerta({});
       }, 2000);
     } catch (error) {
-      console.log();
+      console.log(error);
     }
   };
   const submitColaborador = async (email) => {
@@ -323,7 +322,6 @@ const ProyectosProvider = ({ children }) => {
   };
   const handleModalEliminarColaborador = (colaborador) => {
     setModalEliminarColaborador(!modalEliminarColaborador);
-    //console.log(colaborador);
     setColaborador(colaborador);
   };
   const eliminarColaborador = async (id) => {
@@ -360,7 +358,6 @@ const ProyectosProvider = ({ children }) => {
   };
   const handleEstadoTarea = async (id) => {
     const token = comprobarToken();
-    //console.log(id);
     if (!token) return;
     const config = configurationBearer(token);
     try {
