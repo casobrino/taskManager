@@ -13,7 +13,7 @@ dotenv.config();
 conectionDb();
 
 //config cors
-const whiteList = [process.env.FRONTEND_URL]
+const whiteList = process.env.FRONTEND_URL
 const corsOptions = {
     origin: function (origin, callback) {
         if (whiteList.includes(origin)) {
@@ -25,8 +25,10 @@ const corsOptions = {
         }
     }
 }
-app.use(cors(corsOptions))
-const PORT = process.env.PORT || 4000;
+//TODO Watch the withelist and create an middlewareCors
+app.use(cors())
+//TODO Create an Enviroment Port that functions well
+const PORT =  4000;
 
 //routing
 app.use('/api/users', userRouts);
@@ -41,7 +43,8 @@ const server = app.listen(PORT, () => {
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-        origin: process.env.FRONTEND_URL,
+        //TODO Fix import of origins
+        origin: '*',
     },
 });
 io.on('connection', (socket) => {
